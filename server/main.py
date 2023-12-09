@@ -1,10 +1,14 @@
+import uvicorn
 from fastapi import FastAPI
+from auth.router import user_route
 
 
-app = FastAPI()
+app = FastAPI(
+        title='Polyclinic',
+        description='CRUD for medical models'
+    )
 
-@app.get("/hello")
-    return ("status" : 200)
 
+app.include_router(user_route, prefix='/auth', tags=['auth'])
 
 
