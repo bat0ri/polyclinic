@@ -37,7 +37,6 @@ def decode_jwt(token):
     return decoded
 
 
-
 class JWTBearer(HTTPBearer):
     def __init__(self, auto_error: bool = True):
         super().__init__(auto_error=auto_error)
@@ -56,7 +55,6 @@ class JWTBearer(HTTPBearer):
 
     def verify_jwt(self, jwt_token: str):
         is_token_valid = False
-        
 
         try:
             payload = decode_jwt(jwt_token)

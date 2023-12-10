@@ -9,6 +9,6 @@ app = FastAPI(
     )
 
 
-app.include_router(user_route, prefix='/auth', tags=['auth'])
+app.include_router(user_route, prefix='/auth', tags=['JWT'])
 
 

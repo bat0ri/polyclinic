@@ -10,18 +10,19 @@ import datetime
 
 class UserRepo():
 
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession = Depends(get_async_session)):
         self.session = session
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.session.close()
 
     async def close(self):
         await self.session.close()
 
-    async def insert_new_user(self, user_data: CreateUser):
-        new_user = User(
-            username=user_data.username,
-            hash_password=BcryptHasher.get_password_hash(user_data.hash_password),
-            email=user_data.email,
-        )
+    async def insert_user(self, new_user: User):
         self.session.add(new_user)
         await self.session.commit()
         return new_user
@@ -35,6 +36,14 @@ class UserRepo():
         query = select(User).where(User.email==email)
         user = await self.session.execute(query)
         return user.scalars().first()
+
+    async def check_new_email(self, email: GetUserByEmail):
+        query = select(User).where(User.email==email)
+        user = await self.session.execute(query)
+        if user.scalars().first() is not None:
+            return True
+        else:
+            return False
 
     async def get_user_by_username(self, username: GetUserByUsername):
         query = select(User).where(User.username==username)
