@@ -18,8 +18,9 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from auth.models import Base
-target_metadata = Base.metadata
+from auth.models import Base as user
+from app.diagnoses.model import Base as diagnose
+target_metadata = [user.metadata, diagnose.metadata]
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
