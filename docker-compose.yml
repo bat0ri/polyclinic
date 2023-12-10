@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:alpine3.18
+    container_name: psql
+    build:
+      context: .
+    ports:
+      - "5435:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=clinic
+    restart: always
+    #server:
+  #  build: ./server
+  #  image: server
+  #  ports:
+  #    - "8000:8000"
+  #  environment:
+  #    - NODE_ENV=production
