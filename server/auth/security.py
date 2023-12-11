@@ -2,7 +2,10 @@ import jwt
 from datetime import datetime, timedelta
 from pathlib import Path
 from fastapi.security import HTTPBearer,  HTTPAuthorizationCredentials
-from fastapi import Request, HTTPException, Depends
+from fastapi import Request, HTTPException, Depends, status
+from auth.repository import UserRepo
+from config import get_async_session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def encode_jwt(payload: dict, expire_minutes: int = 10):
@@ -83,3 +86,23 @@ class RoleBasedJWTBearer(JWTBearer):
             raise HTTPException(status_code=403, detail="ошибка токена")
 
 
+async def get_current_user(token: str = Depends(JWTBearer()), 
+                            session: AsyncSession = Depends(get_async_session)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    if token is None:
+        raise credentials_exception
+
+    payload = decode_jwt(token)
+    username: str = payload.get("sub")
+    if username is None:
+        raise credentials_exception
+
+    async with UserRepo(session) as repository:
+        user = await repository.get_user_by_username(username)
+
+    return user

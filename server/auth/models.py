@@ -40,4 +40,4 @@ class User(Base):
 
     @property
     def is_doctor(self) -> bool:
-        return Roles.ROLE_DOCKTOR in self.roles
+        return Roles.ROLE_DOCTOR in self.roles
