@@ -12,7 +12,7 @@ Base = declarative_base()
 
 class Roles(str, Enum):
     ROLE_PACIENT = "ROLE_PACIENT"
-    ROLE_DOCKTOR = "ROLE_DOCKTOR"
+    ROLE_DOCTOR = "ROLE_DOCTOR"
     ROLE_SUPERADMIN = "ROLE_SUPERADMIN"
 
 
@@ -40,4 +40,4 @@ class User(Base):
 
     @property
     def is_doctor(self) -> bool:
-        return Roles.ROLE_DOCKTOR in self.roles
+        return Roles.ROLE_DOCTOR in self.roles

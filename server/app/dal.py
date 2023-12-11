@@ -23,7 +23,6 @@ class BaseRepo(Generic[T]):
     async def close(self):
         await self.session.close()
 
-
     async def insert(self, instance: T):
         self.session.add(instance)
         await self.session.commit()
@@ -38,4 +37,15 @@ class BaseRepo(Generic[T]):
         q = select(self.model).where(self.model.id==item_id)
         exe = await self.session.execute(q)
         return exe.scalar()
+
+    async def drop(self, item_id: int):
+        q = delete(self.model).filter(self.model.id==item_id)
+        await self.session.execute(q)
+        await self.session.commit()
+
+    async def update(self, item_id: int, values: dict):
+        q = update(self.model).where(self.model.id == item_id).values(values)
+        await self.session.execute(q)
+        await self.session.commit()
+
 

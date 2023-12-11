@@ -7,7 +7,7 @@ from auth.schema import (CreateUser, GetUserByEmail, GetUserByUsername,
 from auth.repository import UserRepo
 from config import get_async_session
 from auth.hashing import BcryptHasher
-from auth.security import encode_jwt, decode_jwt, JWTBearer
+from auth.security import encode_jwt, decode_jwt, JWTBearer, get_current_user
 from auth.service import registration, login
 
 
@@ -30,9 +30,14 @@ async def logout(response: Response):
     response.delete_cookie("access_token")
     return {"message": "Logged out successfully"}
 
+@user_route.get("/profile")
+async def get_profile(user = Depends(get_current_user)):
+    return user
+
 @user_route.get("/protected", dependencies=[Depends(JWTBearer())])
 async def all_users_with_token(session: AsyncSession = Depends(get_async_session)):
     repository = UserRepo(session)
     users = await repository.get_all_users()
     await repository.close()
     return users
+
