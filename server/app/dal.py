@@ -39,3 +39,12 @@ class BaseRepo(Generic[T]):
         exe = await self.session.execute(q)
         return exe.scalar()
 
+    async def drop(self, item_id: int):
+        q = delete(self.model).filter(self.model.id==item_id)
+        await self.session.execute(q)
+
+    async def update(self, item_id: int, values: dict):
+        q = update(self.model).where(self.model.id == item_id).values(values)
+        await self.session.execute(q)
+
+
