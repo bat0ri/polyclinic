@@ -21,7 +21,8 @@ if config.config_file_name is not None:
 from auth.models import Base as user
 from app.diagnoses.model import Base as diagnose
 from app.notes.model import Base as note
-target_metadata = [user.metadata, diagnose.metadata, note.metadata]
+from app.meetings.model import Base as meeting
+target_metadata = [user.metadata, diagnose.metadata, note.metadata, meeting.metadata]
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
