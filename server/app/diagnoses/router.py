@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.diagnoses.repository import DiagnoseRepo
 from config import get_async_session
 from app.diagnoses.model import Diagnosis
-from app.diagnoses.schemas import CreateDiagnose, UpdateDiagnose
+from app.diagnoses.schemas import CreateDiagnose, UpdateDiagnose, ReadDiagnose
 from auth.security import JWTBearer, RoleBasedJWTBearer
+from typing import List
 
 
 diagnose_route = APIRouter()
@@ -19,16 +20,17 @@ async def create_new_diagnose(diagnose_data: CreateDiagnose, repo: DiagnoseRepo 
     await repo.close()
     return new_diagnose
 
-@diagnose_route.get("/get_all")
+@diagnose_route.get("/get_all", response_model=List[ReadDiagnose])
 async def get_all_diagnoses(repo: DiagnoseRepo = Depends(DiagnoseRepo)):
-    return await repo.get_all()
+    diagnoses = await repo.get_all()
+    return [ReadDiagnose(name=diagnose.name) for diagnose in diagnoses]
 
-@diagnose_route.get("/get_by_id/{item_id}")
+@diagnose_route.get("/get_by_id/{item_id}", response_model=ReadDiagnose)
 async def get_diagnose_by_id(item_id: int, repo: DiagnoseRepo = Depends(DiagnoseRepo)):
     diagnose = await repo.get_by_id(item_id)
     if not diagnose:
         raise HTTPException(status_code=404, detail="Diagnosis not found")
-    return diagnose
+    return ReadDiagnose(name=diagnose.name)
 
 @diagnose_route.patch("/update", dependencies=[Depends(RoleBasedJWTBearer())])
 async def update_diagnose_by_id(item_id: int, values: UpdateDiagnose, repo: DiagnoseRepo = Depends(DiagnoseRepo)):
