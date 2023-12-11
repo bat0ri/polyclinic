@@ -63,6 +63,23 @@ class JWTBearer(HTTPBearer):
             is_token_valid = False
         except jwt.InvalidTokenError:
             is_token_valid = False
-
         return is_token_valid
+
+
+class RoleBasedJWTBearer(JWTBearer):
+    async def __call__(self, request: Request):
+        jwt_token = await super().__call__(request)
+        if jwt_token:
+            payload = decode_jwt(jwt_token)
+            user_roles = payload.get("roles", [])
+
+            if "ROLE_DOCTOR" in user_roles:
+                return jwt_token
+            elif "ROLE_PATIENT" in user_roles:
+                raise HTTPException(status_code=403, detail="Вы не доктор")
+            else:
+                raise HTTPException(status_code=403, detail="ошибка роли")
+        else:
+            raise HTTPException(status_code=403, detail="ошибка токена")
+
 

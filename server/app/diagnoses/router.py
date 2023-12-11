@@ -3,12 +3,13 @@ from app.diagnoses.repository import DiagnoseRepo
 from config import get_async_session
 from app.diagnoses.model import Diagnosis
 from app.diagnoses.schemas import CreateDiagnose, UpdateDiagnose
+from auth.security import JWTBearer, RoleBasedJWTBearer
 
 
 diagnose_route = APIRouter()
 
 
-@diagnose_route.post("/create_new")
+@diagnose_route.post("/create_new", dependencies=[Depends(RoleBasedJWTBearer())])
 async def create_new_diagnose(diagnose_data: CreateDiagnose, repo: DiagnoseRepo = Depends(DiagnoseRepo)):
     _new = Diagnosis(
             name=diagnose_data.name,
@@ -29,7 +30,7 @@ async def get_diagnose_by_id(item_id: int, repo: DiagnoseRepo = Depends(Diagnose
         raise HTTPException(status_code=404, detail="Diagnosis not found")
     return diagnose
 
-@diagnose_route.patch("/update")
+@diagnose_route.patch("/update", dependencies=[Depends(RoleBasedJWTBearer())])
 async def update_diagnose_by_id(item_id: int, values: UpdateDiagnose, repo: DiagnoseRepo = Depends(DiagnoseRepo)):
     try:
         values_dict = values.dict(exclude_unset=True)  
@@ -39,7 +40,7 @@ async def update_diagnose_by_id(item_id: int, values: UpdateDiagnose, repo: Diag
     except Exception as e:
         return {"status_code": 500, "detail": f"Не удалось обновить: {str(e)}"}
 
-@diagnose_route.delete("/delete")
+@diagnose_route.delete("/delete", dependencies=[Depends(RoleBasedJWTBearer())])
 async def delete_diagnose_by_id(item_id: int, repo: DiagnoseRepo = Depends(DiagnoseRepo)):
     try:
         await repo.drop(item_id=item_id)

@@ -21,6 +21,7 @@ async def registration(user: RegistrationUser, session: AsyncSession = Depends(g
             username=user.username,
             hash_password=BcryptHasher.get_password_hash(user.password),
             email=user.email,
+            roles=[user.roles]
         )
         new_user = await repository.insert_user(new_user)
         return new_user
@@ -29,7 +30,8 @@ async def registration(user: RegistrationUser, session: AsyncSession = Depends(g
 async def create_token(user: User, response: Response) -> TokenInfo:
     payload = {
         "sub": user.username,
-        "email": user.email
+        "email": user.email,
+        "roles": user.roles
         }
     token = encode_jwt(payload=payload)
     response.set_cookie(key="access_token", value=token)

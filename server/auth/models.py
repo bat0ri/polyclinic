@@ -12,7 +12,7 @@ Base = declarative_base()
 
 class Roles(str, Enum):
     ROLE_PACIENT = "ROLE_PACIENT"
-    ROLE_DOCKTOR = "ROLE_DOCKTOR"
+    ROLE_DOCTOR = "ROLE_DOCTOR"
     ROLE_SUPERADMIN = "ROLE_SUPERADMIN"
 
 
