@@ -20,6 +20,16 @@ async def create_new_diagnose(diagnose_data: CreateDiagnose, repo: DiagnoseRepo 
     await repo.close()
     return new_diagnose
 
+@diagnose_route.post("/create_diag")
+async def create_new_diagnose(diagnose_data: CreateDiagnose, repo: DiagnoseRepo = Depends(DiagnoseRepo)):
+    _new = Diagnosis(
+            name=diagnose_data.name,
+            description=diagnose_data.description
+        )
+    new_diagnose = await repo.insert(_new)
+    await repo.close()
+    return new_diagnose
+
 @diagnose_route.get("/get_all", response_model=List[ReadDiagnose])
 async def get_all_diagnoses(repo: DiagnoseRepo = Depends(DiagnoseRepo)):
     diagnoses = await repo.get_all()

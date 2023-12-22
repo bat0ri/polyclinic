@@ -13,6 +13,18 @@ services:
       - POSTGRES_PASSWORD=12345
       - POSTGRES_DB=clinic
     restart: always
+  db_test:
+    image: postgres:alpine3.18
+    container_name: psql_test
+    build:
+      context: .
+    ports:
+      - "5436:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=clinic_test
+    restart: always
     #server:
   #  build: ./server
   #  image: server

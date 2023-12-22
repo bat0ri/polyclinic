@@ -6,6 +6,13 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from dotenv import load_dotenv
 
+from auth.models import Base as user
+from app.diagnoses.model import Base as diagnose
+from app.notes.model import Base as note
+from app.meetings.model import Base as meeting
+
+meta = [user.metadata, diagnose.metadata, note.metadata, meeting.metadata]
+
 
 load_dotenv()
 

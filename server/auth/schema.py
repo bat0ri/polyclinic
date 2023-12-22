@@ -49,4 +49,24 @@ class LoginForm(BaseModel):
 
 class TokenInfo(BaseModel):
     access_token: str
+    refresh_token: str
     token_type: str
+
+class UserProfile(BaseModel):
+    id: str
+    username: Optional[str]
+    hash_password: str
+    email: str
+    is_active: bool
+    phone_number: Optional[str]
+    first_name: Optional[str]
+    last_name: Optional[str]
+    create_date: Optional[str]
+    update_date: Optional[str]
+    roles: Optional[List[str]]
+
+class AuthResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str
+    user: UserProfile
