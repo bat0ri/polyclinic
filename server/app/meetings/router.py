@@ -17,6 +17,8 @@ async def create_new_meeting(
     new_meeting = Meeting(
         pacient_id=current_user.id,
         meet_date=meeting_data.meet_date,
+        doctor_id=meeting_data.doctor_id,
+        doctor_username=meeting_data.doctor_username
     )
 
     created_meeting = await repo.insert(new_meeting)

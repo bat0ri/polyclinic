@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import logo from './logo.svg';
+import './tailwindcss.css'
 import LoginForm from './components/LoginForm';
 import RegistrationForm from './components/RegistrationForm';
 import { Context } from '.';
@@ -7,6 +7,10 @@ import { observer } from 'mobx-react-lite';
 import AppointmentForm from './components/AppointmentForm';
 import { User } from './models/User';
 import UserService from './services/UserService';
+import { Routes, Route } from 'react-router-dom';
+import DoctorProfile from './components/DoctorProfile';
+
+
 
 function App() {
     const {store} = useContext(Context);
@@ -24,26 +28,32 @@ function App() {
         )
     }
 
-    if(!store.isAuth) {
-        return (
-            <div>
-                <LoginForm/>
-            </div>
-        )
-    }
-
-    async function getUsers() {
+    async function getDoctors() {
         try {
-            const response = await UserService.fetchUsers();
+            const response = await UserService.fetchDoctors();
             setUsers(response.data);
         } catch(e) {
             console.log(e)
         }
     }
+
+    if(!store.isAuth) {
+        return (
+            <div>
+                <Routes>
+                    <Route path='/login' element={<LoginForm/>}></Route>
+                    <Route path='/singup' element={<RegistrationForm/>}></Route>
+                </Routes>
+            </div>
+        )
+    }
     
   return (
     <div className="App">
-
+        <Routes>
+            <Route path='/home' element={<AppointmentForm/>}/>
+            <Route path="/profile" element={<DoctorProfile/>}/>
+        </Routes>
     </div>
   );
 }
