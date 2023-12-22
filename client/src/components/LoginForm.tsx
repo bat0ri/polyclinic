@@ -1,7 +1,7 @@
 import React, { FC, useContext, useState } from 'react';
 import { Context } from '..';
 import { observer } from 'mobx-react-lite';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 
 const LoginForm: FC = () => {
@@ -14,8 +14,12 @@ const LoginForm: FC = () => {
 
     const handleLogin = async () => {
         try {
-            store.login(username, password);
-            navigate('/home');
+            await store.login(username, password);
+            if (store.isAuth && store.user.roles && store.user.roles.includes("ROLE_DOCTOR")) {
+                navigate('/profile');
+            } else {
+                navigate('/home');
+            }
         } catch (e: any) {
             if ('response' in e && e.response?.data?.message) {
                 console.log(e.response.data.message);
@@ -48,6 +52,7 @@ const LoginForm: FC = () => {
                 />
             </div>
             <button onClick={handleLogin}>Login</button>
+            <Link to="/singup">Зарегистрироваться</Link>
         </div>
     );
 };

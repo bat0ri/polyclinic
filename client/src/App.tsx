@@ -8,6 +8,7 @@ import AppointmentForm from './components/AppointmentForm';
 import { User } from './models/User';
 import UserService from './services/UserService';
 import { Routes, Route } from 'react-router-dom';
+import DoctorProfile from './components/DoctorProfile';
 
 
 
@@ -50,7 +51,8 @@ function App() {
   return (
     <div className="App">
         <Routes>
-            <Route path='/home' element={<AppointmentForm/>}></Route>
+            <Route path='/home' element={<AppointmentForm/>}/>
+            <Route path="/profile" element={<DoctorProfile/>}/>
         </Routes>
     </div>
   );

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
 
-const AppointmentForm: FC = () => {
+const DoctorProfile: FC = () => {
 
     const {store} = useContext(Context);
     const navigate = useNavigate();
@@ -24,10 +24,10 @@ const AppointmentForm: FC = () => {
 
     return (
         <div>
-            зашел? а теперь выйди
+            Приветствую доктор
             <button onClick={handleLogout}>Выйти</button>
         </div>
     );
 };
 
-export default observer(AppointmentForm);
+export default observer(DoctorProfile);

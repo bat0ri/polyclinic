@@ -1,5 +1,7 @@
 import React, { FC, useContext, useState } from 'react';
 import { Context } from '..';
+import { Link } from 'react-router-dom';
+
 
 const RegistrationForm: FC = () => {
     const [username, setUsername] = useState<string>('');
@@ -41,6 +43,7 @@ const RegistrationForm: FC = () => {
                 />
             </div>
             <button onClick={() => store.registration(username, email, password)}>Register</button>
+            <Link to="/login">У меня есть аккаунт</Link>
         </div>
     );
 };
