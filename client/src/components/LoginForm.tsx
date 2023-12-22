@@ -1,12 +1,29 @@
 import React, { FC, useContext, useState } from 'react';
 import { Context } from '..';
 import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router-dom';
+
 
 const LoginForm: FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
-    const {store} = useContext(Context)
+    const navigate = useNavigate();
+
+    const {store} = useContext(Context);
+
+    const handleLogin = async () => {
+        try {
+            store.login(username, password);
+            navigate('/home');
+        } catch (e: any) {
+            if ('response' in e && e.response?.data?.message) {
+                console.log(e.response.data.message);
+            } else {
+                console.log('An error occurred:', e);
+            }
+        }
+    };
 
     return (
         <div>
@@ -30,7 +47,7 @@ const LoginForm: FC = () => {
                     onChange={e => setPassword(e.target.value)}
                 />
             </div>
-            <button onClick={() => store.login(username, password)}>Login</button>
+            <button onClick={handleLogin}>Login</button>
         </div>
     );
 };

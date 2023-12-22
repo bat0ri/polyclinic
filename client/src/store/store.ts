@@ -6,6 +6,7 @@ import axios from 'axios';
 import { AuthResponce } from '../models/response/AuthResponce';
 import { API_URL } from '../http';
 
+
 export default class Store {
     user = {} as User;
     isAuth = false;

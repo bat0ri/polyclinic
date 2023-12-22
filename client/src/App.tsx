@@ -7,6 +7,9 @@ import { observer } from 'mobx-react-lite';
 import AppointmentForm from './components/AppointmentForm';
 import { User } from './models/User';
 import UserService from './services/UserService';
+import { Routes, Route } from 'react-router-dom';
+
+
 
 function App() {
     const {store} = useContext(Context);
@@ -24,14 +27,6 @@ function App() {
         )
     }
 
-    if(!store.isAuth) {
-        return (
-            <div>
-                <LoginForm/>
-            </div>
-        )
-    }
-
     async function getUsers() {
         try {
             const response = await UserService.fetchUsers();
@@ -40,10 +35,23 @@ function App() {
             console.log(e)
         }
     }
+
+    if(!store.isAuth) {
+        return (
+            <div>
+                <Routes>
+                    <Route path='/login' element={<LoginForm/>}></Route>
+                    <Route path='/singup' element={<RegistrationForm/>}></Route>
+                </Routes>
+            </div>
+        )
+    }
     
   return (
     <div className="App">
-
+        <Routes>
+            <Route path='/home' element={<AppointmentForm/>}></Route>
+        </Routes>
     </div>
   );
 }
