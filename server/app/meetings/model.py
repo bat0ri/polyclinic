@@ -13,8 +13,9 @@ class Meeting(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    # пациент который записывается на прием
     pacient_id = Column(UUID(as_uuid=True), ForeignKey(User.id), nullable=False)
+    doctor_id = Column(UUID(as_uuid=True), ForeignKey(User.id), nullable=False)
+    doctor_username = Column(String, nullable=True)
 
     create_date = Column(DateTime, default=datetime.now(), nullable= True)
     meet_date = Column(DateTime, nullable=False)

@@ -28,9 +28,9 @@ function App() {
         )
     }
 
-    async function getUsers() {
+    async function getDoctors() {
         try {
-            const response = await UserService.fetchUsers();
+            const response = await UserService.fetchDoctors();
             setUsers(response.data);
         } catch(e) {
             console.log(e)
