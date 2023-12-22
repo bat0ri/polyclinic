@@ -3,7 +3,7 @@ from auth.schema import CreateUser, GetUserByEmail, GetUserByUsername
 from config import get_async_session
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends
-from sqlalchemy import select, delete, update
+from sqlalchemy import select, delete, update, func
 from auth.hashing import BcryptHasher
 import datetime
 
@@ -31,6 +31,12 @@ class UserRepo():
         query = select(User).filter(User.is_active==True)
         user_list = await self.session.execute(query)
         return user_list.scalars().all()
+
+    async def get_all_doctors(self):
+        user_list = await self.get_all_users()
+        doctors = [user for user in user_list if user.is_doctor]
+        return doctors
+
 
     async def get_user_by_email(self, email: GetUserByEmail):
         query = select(User).where(User.email==email)

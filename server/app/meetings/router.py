@@ -43,5 +43,4 @@ async def drop_meeting_by_id(
     except Exception as e:
         return HTTPException(status_code=500, detail=f"{e}")
 
-
 # spisok zapiseyi

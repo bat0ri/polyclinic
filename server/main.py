@@ -4,6 +4,7 @@ from auth.router import user_route
 from app.diagnoses.router import diagnose_route
 from app.notes.router import note_route
 from app.meetings.router import meeting_route
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI(
@@ -11,6 +12,13 @@ app = FastAPI(
         description='CRUD for medical models'
     )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(user_route, prefix='/auth', tags=['JWT-Authentication routes'])
 
