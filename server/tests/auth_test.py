@@ -6,7 +6,6 @@ from sqlalchemy.exc import IntegrityError
 from auth.hashing import BcryptHasher
 from auth.models import User, Roles
 from conftest import client, async_session_maker
-from unittest.mock import MagicMock, patch
 from fastapi import HTTPException
 
 

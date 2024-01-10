@@ -12,6 +12,13 @@ class MeetRepo(BaseRepo[Meeting]):
         exe = await self.session.execute(q)
         return exe.scalars().all()
 
+
+    async def get_by_user_uuid_for_doctor(self, user_id):
+        q = select(Meeting).where(Meeting.doctor_id==user_id)
+        exe = await self.session.execute(q)
+        return exe.scalars().all()
+
+
     async def get_by_doctor_and_time(self, doctor_id, meet_date):
         q = select(Meeting).where(
                 Meeting.doctor_id == doctor_id,

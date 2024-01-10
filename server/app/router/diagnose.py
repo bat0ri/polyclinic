@@ -20,6 +20,8 @@ async def create_new_diagnose(diagnose_data: CreateDiagnose, repo: DiagnoseRepo 
     await repo.close()
     return new_diagnose
 
+
+
 @diagnose_route.post("/create_diag")
 async def create_new_diagnose(diagnose_data: CreateDiagnose, repo: DiagnoseRepo = Depends(DiagnoseRepo)):
     _new = Diagnosis(
@@ -30,10 +32,14 @@ async def create_new_diagnose(diagnose_data: CreateDiagnose, repo: DiagnoseRepo 
     await repo.close()
     return new_diagnose
 
+
+
 @diagnose_route.get("/get_all", response_model=List[ReadDiagnose])
 async def get_all_diagnoses(repo: DiagnoseRepo = Depends(DiagnoseRepo)):
     diagnoses = await repo.get_all()
     return [ReadDiagnose(name=diagnose.name) for diagnose in diagnoses]
+
+
 
 @diagnose_route.get("/get_by_id/{item_id}", response_model=ReadDiagnose)
 async def get_diagnose_by_id(item_id: int, repo: DiagnoseRepo = Depends(DiagnoseRepo)):
@@ -41,6 +47,8 @@ async def get_diagnose_by_id(item_id: int, repo: DiagnoseRepo = Depends(Diagnose
     if not diagnose:
         raise HTTPException(status_code=404, detail="Diagnosis not found")
     return ReadDiagnose(name=diagnose.name)
+
+
 
 @diagnose_route.patch("/update", dependencies=[Depends(RoleBasedJWTBearer())])
 async def update_diagnose_by_id(item_id: int, values: UpdateDiagnose, repo: DiagnoseRepo = Depends(DiagnoseRepo)):
@@ -51,6 +59,8 @@ async def update_diagnose_by_id(item_id: int, values: UpdateDiagnose, repo: Diag
         return {"status_code": 200, "detail": "обновлен"}
     except Exception as e:
         return {"status_code": 500, "detail": f"Не удалось обновить: {str(e)}"}
+
+
 
 @diagnose_route.delete("/delete", dependencies=[Depends(RoleBasedJWTBearer())])
 async def delete_diagnose_by_id(item_id: int, repo: DiagnoseRepo = Depends(DiagnoseRepo)):

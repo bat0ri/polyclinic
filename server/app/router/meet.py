@@ -24,13 +24,21 @@ async def create_new_meeting(
 
 
 
-
 @meeting_route.get("/list")
-async def get_all_my_meeting(
+async def get_all_my_meeting_for_pacient(
     repo: MeetRepo = Depends(MeetRepo),
     current_user: User = Depends(get_current_user)
 ):
     return await repo.get_by_user_uuid(current_user.id)
+
+
+
+@meeting_route.get("/list/doctor")
+async def get_all_my_meeting_for_doctor(
+    repo: MeetRepo = Depends(MeetRepo),
+    current_user: User = Depends(get_current_user)
+):
+    return await repo.get_by_user_uuid_for_doctor(current_user.id)
 
 
 

@@ -12,13 +12,16 @@ from celery import Celery
 from config import SMTP_USER, SMTP_PASS
 
 
+
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 465
+
 
 celery = Celery('tasks', broker='redis://localhost:6379')
 
 
-def get_email_template_dashboard(username: str):
+def get_email_template_meet(username: str):
+    ''' Функция создает шаблон email после успешной записи на прием '''
     email = EmailMessage()
     email['Subject'] = 'Вы успешно записались на прием'
     email['From'] = SMTP_USER
@@ -42,9 +45,9 @@ def get_email_template_dashboard(username: str):
     return email
 
 
-
 @celery.task
-def send_email_report_dashboard(username: str):
+def send_email_report_meet(username: str):
+    ''' Celery-task: отправка email после создание записи на прием '''
     email = get_email_template_dashboard(username)
     with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
         server.login(SMTP_USER, SMTP_PASS)
@@ -75,6 +78,6 @@ async def create_meeting(
     created_meeting = await repo.insert(new_meeting)
     await repo.close()
 
-    send_email_report_dashboard.delay(current_user.username)
+    send_email_report_meet.delay(current_user.username)
 
     return created_meeting
