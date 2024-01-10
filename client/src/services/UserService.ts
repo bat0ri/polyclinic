@@ -20,6 +20,10 @@ export default class UserService {
     static fetchMeets(): Promise<AxiosResponse<Meet[]>> {
         return $api.get<Meet[]>('/meeting/list');
     }
+
+    static fetchMeetsDoctor(): Promise<AxiosResponse<Meet[]>> {
+        return $api.get<Meet[]>('/meeting/list/doctor');
+    }
     
 }
 

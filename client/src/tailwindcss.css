@@ -2,3 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* Для скрытия скролл-бара в Chrome, Safari и Edge */
+.overflow-y-auto::-webkit-scrollbar {
+    display: none;
+}
+
+/* Для скрытия скролл-бара в Firefox */
+.overflow-y-auto {
+    scrollbar-width: none; /* Для Firefox */
+}
+
