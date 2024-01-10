@@ -14,6 +14,14 @@ async def create_new_meeting(
     current_user: User = Depends(get_current_user)
 ):
 
+    existing_meetings = await repo.get_by_doctor_and_time(
+        doctor_id=meeting_data.doctor_id,
+        meet_date=meeting_data.meet_date
+    )
+
+    if existing_meetings:
+        return {"detail": "У этого врача уже есть запись на это время."}
+
     new_meeting = Meeting(
         pacient_id=current_user.id,
         meet_date=meeting_data.meet_date,
