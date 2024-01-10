@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 from auth.models import User
-from app.diagnoses.model import Diagnosis
+from app.models.diagnose import Diagnosis
 
 
 Base = declarative_base()

@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.meetings.repository import MeetRepo 
+from app.repository.meet import MeetRepo 
 from auth.security import JWTBearer, get_current_user
-from app.meetings.schemas import CreateMeeting, DropMeeting
+from app.schemas.meet import CreateMeeting, DropMeeting
 from auth.models import User
-from app.meetings.model import Meeting 
+from app.models.meet import Meeting 
 
 import smtplib
 from email.message import EmailMessage

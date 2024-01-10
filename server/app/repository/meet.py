@@ -1,5 +1,5 @@
-from app.dal import BaseRepo
-from app.meetings.model import Meeting
+from app.repository.dal import BaseRepo
+from app.models.meet import Meeting
 from sqlalchemy import select
 
 
