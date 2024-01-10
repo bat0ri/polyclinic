@@ -12,6 +12,16 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=12345
       - POSTGRES_DB=clinic
+
+  redis:
+    image: redis:alpine3.19
+    container_name: redis_broker
+    build: 
+      context: .
+    ports:
+      - "6379:6379"
+
+  
   #  restart: always
   #db_test:
   #  image: postgres:alpine3.18

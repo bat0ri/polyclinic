@@ -18,6 +18,9 @@ load_dotenv()
 
 DB_URL = os.getenv('DB_CONFIG')
 
+SMTP_USER = os.getenv('SMTP_USER')
+SMTP_PASS = os.getenv('SMTP_PASSWORD')
+
 engine = create_async_engine(DB_URL, future=True, echo=True)
 
 async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
