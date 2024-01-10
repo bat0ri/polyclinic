@@ -7,24 +7,34 @@ services:
     build:
       context: .
     ports:
-      - "5435:5432"
+      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=12345
       - POSTGRES_DB=clinic
-    restart: always
-  db_test:
-    image: postgres:alpine3.18
-    container_name: psql_test
-    build:
+
+  redis:
+    image: redis:alpine3.19
+    container_name: redis_broker
+    build: 
       context: .
     ports:
-      - "5436:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=12345
-      - POSTGRES_DB=clinic_test
-    restart: always
+      - "6379:6379"
+
+  
+  #  restart: always
+  #db_test:
+  #  image: postgres:alpine3.18
+  #  container_name: psql_test
+  #  build:
+  #    context: .
+  #  ports:
+  #    - "5436:5432"
+  #  environment:
+  #    - POSTGRES_USER=postgres
+  #    - POSTGRES_PASSWORD=12345
+  #    - POSTGRES_DB=clinic_test
+  #  restart: always
     #server:
   #  build: ./server
   #  image: server

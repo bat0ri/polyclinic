@@ -7,9 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from dotenv import load_dotenv
 
 from auth.models import Base as user
-from app.diagnoses.model import Base as diagnose
-from app.notes.model import Base as note
-from app.meetings.model import Base as meeting
+from app.models.diagnose import Base as diagnose
+from app.models.note import Base as note
+from app.models.meet import Base as meeting
 
 meta = [user.metadata, diagnose.metadata, note.metadata, meeting.metadata]
 
@@ -17,6 +17,9 @@ meta = [user.metadata, diagnose.metadata, note.metadata, meeting.metadata]
 load_dotenv()
 
 DB_URL = os.getenv('DB_CONFIG')
+
+SMTP_USER = os.getenv('SMTP_USER')
+SMTP_PASS = os.getenv('SMTP_PASSWORD')
 
 engine = create_async_engine(DB_URL, future=True, echo=True)
 

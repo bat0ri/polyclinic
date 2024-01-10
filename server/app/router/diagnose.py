@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.diagnoses.repository import DiagnoseRepo
+from app.repository.diagnose import DiagnoseRepo
 from config import get_async_session
-from app.diagnoses.model import Diagnosis
-from app.diagnoses.schemas import CreateDiagnose, UpdateDiagnose, ReadDiagnose
+from app.models.diagnose import Diagnosis
+from app.schemas.diagnose import CreateDiagnose, UpdateDiagnose, ReadDiagnose
 from auth.security import JWTBearer, RoleBasedJWTBearer
 from typing import List
 

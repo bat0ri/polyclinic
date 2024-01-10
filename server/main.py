@@ -1,9 +1,9 @@
 import uvicorn
 from fastapi import FastAPI
 from auth.router import user_route
-from app.diagnoses.router import diagnose_route
-from app.notes.router import note_route
-from app.meetings.router import meeting_route
+from app.router.diagnose import diagnose_route
+from app.router.note import note_route
+from app.router.meet import meeting_route
 from fastapi.middleware.cors import CORSMiddleware
 
 

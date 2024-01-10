@@ -1,11 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.meetings.repository import MeetRepo 
+from app.repository.meet import MeetRepo 
 from auth.security import JWTBearer, get_current_user
-from app.meetings.schemas import CreateMeeting, DropMeeting
+from app.schemas.meet import CreateMeeting, DropMeeting
 from auth.models import User
-from app.meetings.model import Meeting 
+from app.models.meet import Meeting 
+from app.actions.meet import create_meeting
+
+
+
 
 meeting_route = APIRouter()
+
+
 
 @meeting_route.post("/create")
 async def create_new_meeting(
@@ -13,18 +19,11 @@ async def create_new_meeting(
     repo: MeetRepo = Depends(MeetRepo),
     current_user: User = Depends(get_current_user)
 ):
+    res = await create_meeting(meeting_data, repo, current_user)
+    return res
 
-    new_meeting = Meeting(
-        pacient_id=current_user.id,
-        meet_date=meeting_data.meet_date,
-        doctor_id=meeting_data.doctor_id,
-        doctor_username=meeting_data.doctor_username
-    )
 
-    created_meeting = await repo.insert(new_meeting)
-    await repo.close()
 
-    return created_meeting
 
 @meeting_route.get("/list")
 async def get_all_my_meeting(
@@ -32,6 +31,8 @@ async def get_all_my_meeting(
     current_user: User = Depends(get_current_user)
 ):
     return await repo.get_by_user_uuid(current_user.id)
+
+
 
 @meeting_route.delete("/delete")
 async def drop_meeting_by_id(

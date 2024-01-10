@@ -13,6 +13,7 @@ import DoctorProfile from './components/DoctorProfile';
 
 
 function App() {
+    
     const {store} = useContext(Context);
     const [users, setUsers] = useState<User[]>([]);
 
@@ -59,13 +60,3 @@ function App() {
 }
 
 export default observer(App);
-
-{/*<AppointmentForm/>
-        <button onClick={ () => store.logout()}>Выйти</button>
-
-        <div>
-            <button onClick={getUsers}>список пользаков</button>
-        </div>
-        { users.map(user =>
-            <div key={user.email}>{user.email}</div>
-            )}*/}

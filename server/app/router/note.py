@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.notes.repository import NoteRepo
+from app.repository.notes import NoteRepo
 from config import get_async_session
 from auth.security import RoleBasedJWTBearer, get_current_user
-from app.notes.schemas import CreateNote
+from app.schemas.note import CreateNote
 from auth.models import User
-from app.notes.model import Note
+from app.models.note import Note
 
 
 note_route = APIRouter()

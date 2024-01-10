@@ -8,7 +8,7 @@ from config import get_async_session
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-def encode_jwt(payload: dict, expire_minutes: int = 1):
+def encode_jwt(payload: dict, expire_minutes: int = 5000):
     private_key_path = Path("auth/certs/jwt-private.pem")
 
     if not private_key_path.is_file():
@@ -39,7 +39,6 @@ def encode_jwt(payload: dict, expire_minutes: int = 1):
     return access_token, refresh_token
 
 
-
 def decode_jwt(token):
     public_key_path = Path("auth/certs/jwt-public.pem")
 
@@ -52,14 +51,12 @@ def decode_jwt(token):
     return decoded
 
 
-
 class JWTBearer(HTTPBearer):
     def __init__(self, auto_error: bool = True):
         super().__init__(auto_error=auto_error)
 
     async def __call__(self, request: Request):
         credentials: HTTPAuthorizationCredentials = await super().__call__(request)
-
         if credentials:
             if not credentials.scheme == "Bearer":
                 raise HTTPException(status_code=403, detail="Invalid authentication scheme.")
